@@ -90,6 +90,24 @@ def change_brightness(api_key, device_mac, device_model, brightness):
                 'Content-Type': "application/json", 'Accept': "application/json"}
 
     
+def get_devices(api_key):
+    header = {'Govee-API-Key': api_key,
+               'Content-Type': "application/json", 'Accept': "application/json"}
+    url = URL_DEVICES
+    response = requests.get(URL_DEVICES, headers=header)
+    resp_json = response.json()
+    return (resp_json)
+
+def print_devices_model (devices_json_resp):
+    for device in devices_json_resp['data']['devices']:
+        mac_address = device['device']
+        model_name = device.get('model', '')
+        device_name = device['deviceName']
+
+        print("MAC Address: ", mac_address)
+        print("Model Name: ", model_name)
+        print("Device Name: ", device_name)
+        print("---------------")
 
 
 if __name__ == "__main__":
@@ -97,13 +115,15 @@ if __name__ == "__main__":
     #group = parser.add_mutually_exclusive_group(required=True)
 
     parser.add_argument("-a", "--api-key", required=True, help="Govee API key")
-    parser.add_argument("-d", "--device-mac", required=True, help="Device MAC address")
-    parser.add_argument("-m", "--model", required=True, help="Device model")
+    parser.add_argument("-d", "--device-mac", required=False, help="Device MAC address")
+    parser.add_argument("-m", "--model", required=False, help="Device model")
     parser.add_argument("-t", "--trigger", required=False, help="Trigger action: on / off")
     parser.add_argument("-b", "--brightness", required=False, type=int, help="Brightness value (0-100)")
     parser.add_argument('-c', '--color', required=False, type=str, help='Color in RGB in hexadecimal')
     parser.add_argument('-k', '--kelvin', required=False, type=int, help='Color in RGB in hexadecimal')
     
     args = parser.parse_args()
-
-    control_lamp(args.api_key, args.device_mac, args.model, args.trigger, args.brightness, args.color, args.kelvin)
+    if args.device_mac :
+        control_lamp(args.api_key, args.device_mac, args.model, args.trigger, args.brightness, args.color, args.kelvin)
+    else: 
+        print_devices_model(get_devices(args.api_key))
