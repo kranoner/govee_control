@@ -2,7 +2,9 @@ Govee controller
 ====
 
 ## Introduction
-Controller written in pyhton to control your govee lamp using the public api provided by Govee. Documentation available at: 
+Govee controller is a Python script that allows you to control your Govee lamp devices using the Govee API. 
+The script provides a simple interface for triggering actions on your devices and setting brightness, color, and kelvin values.
+Controller written in python to control your Govee lamp using the public api provided by Govee. Documentation available at: 
 https://govee-public.s3.amazonaws.com/developer-docs/GoveeDeveloperAPIReference.pdf
 
 ## Requirements
@@ -18,15 +20,17 @@ To control your lamp you will need:
  - the MAC address of your device
  - the model id of your device
 
-Instruction to get an API key are available from the govee website: https://developer.govee.com/reference/apply-you-govee-api-key
-
-Once your API key received, you can get your device(s) mac address and model by running the script as follows:
-
-`python3 control_lamp.py -a <your api key>`
+* The script uses the Govee API to interact with your devices. You need to obtain an API key from the Govee website and insert it into the script using the `-a` flag. Instruction to get an API key are available from the govee website: https://developer.govee.com/reference/apply-you-govee-api-key
+* If you don't know your device MAC address, you can use the script `python3 control_lamp.py -a <your api key>` to retrieve a list of all your devices and their associated MAC addresses.
 
 
 ## Quick how to
-To control you device run the script as in the examples:
+
+* The `-m` flag is used to specify the model number of your device.
+* The `-t` flag is used to trigger an action on your device: you can set it to `on` or `off` to turn your device on/off, or use `brightness`, `color`, and `kelvin` flags to adjust the brightness, color, and kelvin values of your device.
+* The `-b`, `-c`, and `-k` flags are used to set the brightness, color, and kelvin values of your device respectively.
+
+Some examples:
 
 >Turn on your device:
 >
@@ -43,3 +47,8 @@ To control you device run the script as in the examples:
 > Turn off your device:
 >
 >`python3 control_lamp.py  -a $api_key -d $mac_device -m $model -t off`
+
+
+
+
+### Notes:
